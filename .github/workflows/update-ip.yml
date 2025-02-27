@@ -2,7 +2,7 @@ name: Update IPs Daily
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # รันทุก 5 นาที (เวลาตาม UTC)
+    - cron: "*/1 * * * *"  # รันทุก 5 นาที (เวลาตาม UTC)
 
 jobs:
   update-ips:
