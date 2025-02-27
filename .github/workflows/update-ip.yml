@@ -2,7 +2,7 @@ name: Update IPs Daily
 
 on:
   schedule:
-    - cron: "1 * * * *"  # Run every day at minute 1 of every hour
+    - cron: "*/1 * * * *"  # Run every day at minute 1 of every hour
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
