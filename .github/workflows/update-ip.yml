@@ -2,8 +2,7 @@ name: Update IPs Daily
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # Run every day at minute 1 of every hour
-  workflow_dispatch:  # Allow manual triggering
+    - cron: "*/5 * * * *"  # รันทุก 5 นาที (เวลาตาม UTC)
 
 jobs:
   update-ips:
