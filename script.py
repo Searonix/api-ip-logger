@@ -4,7 +4,7 @@ import urllib3
 
 urllib3.disable_warnings()
 
-API_URL = "http://127.0.0.1:8000/ips"  # เปลี่ยนเป็น API จริง
+API_URL = "https://c7e1-49-237-9-144.ngrok-free.app/ips"  # เปลี่ยนเป็น API จริง
 DATA_FILE = "data.txt"
 
 def fetch_api_data():
