@@ -2,7 +2,7 @@ name: Update IPs Daily
 
 on:
   schedule:
-    - cron: "1 * * * *"  # Run every day at midnight UTC
+    - cron: "1 * * * *"  # Run every day at minute 1 of every hour
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -14,30 +14,34 @@ jobs:
       - name: 🔹 Checkout Repository
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # Explicitly use token for checkout
-      
+          token: ${{ secrets.GITHUB_TOKEN }}  # ใช้ token สำหรับ checkout
+
       - name: 🔹 Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      
+
       - name: 🔹 Install dependencies
         run: pip install requests urllib3
-      
+
       - name: 🔹 Run IP Fetch Script
         run: python script.py
-      
-      - name: 🔹 Debug file existence
+
+      - name: 🔹 Debug File Changes
         run: |
           ls -la
           cat data.txt || echo "data.txt does not exist"
-      
+
+      - name: 🔹 Debug Git Changes
+        run: |
+          git status
+          git diff data.txt || echo "No differences in data.txt"
+
       - name: 🔹 Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.txt || echo "Failed to add data.txt"
-          git status
+          git add data.txt
           git commit -m "📌 Auto-update IPs on $(date '+%Y-%m-%d')" || echo "No changes to commit"
           git push
         env:
