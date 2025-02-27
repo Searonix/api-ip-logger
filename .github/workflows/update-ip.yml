@@ -41,8 +41,15 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
           git add data.txt
           git commit -m "📌 Auto-update IPs on $(date '+%Y-%m-%d')" || echo "No changes to commit"
-          git push
+
+          # 🔥 ดึงการเปลี่ยนแปลงก่อน push
+          git pull --rebase
+          
+          # 🔥 บังคับ push ถ้ายังติดปัญหา (ใช้ในกรณีที่มั่นใจว่าไม่มี Conflict)
+          git push || git push --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
