@@ -14,7 +14,9 @@ def fetch_api_data():
 
     if response.status_code == 200:
         try:
-            return set(response.json())  # แปลงเป็นเซ็ตเพื่อป้องกันข้อมูลซ้ำ
+            raw_ips = response.json()
+            clean_ips = {ip.strip() for ip in raw_ips if ip.strip()}  # 🔹 ลบค่าว่าง
+            return clean_ips
         except Exception as e:
             print(f"❌ Error parsing JSON: {e}")
             return set()
@@ -29,13 +31,13 @@ def load_existing_ips():
 def save_new_ips(new_ips):
     all_ips = load_existing_ips() | new_ips  # รวม IP เก่ากับใหม่
 
-    # ลบ data.txt ก่อนเขียนใหม่
     if os.path.exists(DATA_FILE):
-        os.remove(DATA_FILE)
+        os.remove(DATA_FILE)  # ลบไฟล์เดิมก่อน
 
     with open(DATA_FILE, "w") as file:
-        for ip in sorted(all_ips):  # เรียง IP ตามลำดับ
-            file.write(ip + "\n")
+        for ip in sorted(all_ips):
+            if ip.strip():  # 🔹 ป้องกันการเขียนค่าว่างลงไฟล์
+                file.write(ip.strip() + "\n")
 
     print(f"✅ Updated {len(new_ips)} new IPs, total {len(all_ips)} IPs recorded.")
 
